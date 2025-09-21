@@ -17,14 +17,17 @@ app.use(express.json());
 app.use("/api/todos", todoRoutes);
 
 // ✅ Serve React frontend in production
+// ✅ Serve frontend in production
 if (process.env.NODE_ENV === "production") {
   const frontendPath = path.join(__dirname, "../client/build");
   app.use(express.static(frontendPath));
 
+  // Catch-all: must be "/*", not "*", not ":all(*)"
   app.get("/*", (req, res) => {
     res.sendFile(path.join(frontendPath, "index.html"));
   });
 }
+
 
 // Connect to MongoDB Atlas
 mongoose
