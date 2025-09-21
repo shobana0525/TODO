@@ -1,8 +1,8 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
-require("dotenv").config();
 const path = require("path");
+require("dotenv").config();
 
 const todoRoutes = require("./routes/todos");
 
@@ -14,7 +14,7 @@ app.use(cors());
 app.use(express.json());
 
 // -------------------
-// API routes (fixed)
+// API routes
 // -------------------
 app.use("/api/todos", todoRoutes);
 
@@ -25,7 +25,7 @@ if (process.env.NODE_ENV === "production") {
   const frontendPath = path.join(__dirname, "../client/build");
   app.use(express.static(frontendPath));
 
-  // Safe catch-all route
+  // Catch-all route for React SPA
   app.get("*", (req, res) => {
     res.sendFile(path.join(frontendPath, "index.html"));
   });
@@ -43,8 +43,6 @@ mongoose
   .connect(process.env.MONGO_URI)
   .then(() => {
     console.log("✅ MongoDB connected");
-    app.listen(PORT, () =>
-      console.log(`🚀 Server running on port ${PORT}`)
-    );
+    app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
   })
   .catch((err) => console.error("❌ MongoDB connection error:", err));
