@@ -21,13 +21,13 @@ if (process.env.NODE_ENV === "production") {
   const frontendPath = path.join(__dirname, "../client/build");
   app.use(express.static(frontendPath));
 
-  // ✅ Fixed catch-all route (must be "*" not "/*")
+  // Catch-all route for React SPA
   app.get("*", (req, res) => {
     res.sendFile(path.join(frontendPath, "index.html"));
   });
 }
 
-// Connect to MongoDB Atlas and start server
+// Connect to MongoDB and start server
 mongoose
   .connect(process.env.MONGO_URI)
   .then(() => {
