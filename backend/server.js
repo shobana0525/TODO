@@ -21,8 +21,8 @@ if (process.env.NODE_ENV === "production") {
   const frontendPath = path.join(__dirname, "../client/build");
   app.use(express.static(frontendPath));
 
-  // 👇 Safe catch-all route
-  app.get("/*", (req, res) => {
+  // ✅ Fixed catch-all route (must be "*" not "/*")
+  app.get("*", (req, res) => {
     res.sendFile(path.join(frontendPath, "index.html"));
   });
 }
