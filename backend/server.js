@@ -13,21 +13,32 @@ const PORT = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
 
-// API routes
+// -------------------
+// API routes (fixed)
+// -------------------
 app.use("/api/todos", todoRoutes);
 
-// ✅ Serve frontend in production
+// -------------------
+// Serve React frontend in production
+// -------------------
 if (process.env.NODE_ENV === "production") {
   const frontendPath = path.join(__dirname, "../client/build");
   app.use(express.static(frontendPath));
 
-  // Catch-all route for React SPA
+  // Safe catch-all route
   app.get("*", (req, res) => {
     res.sendFile(path.join(frontendPath, "index.html"));
   });
 }
 
-// Connect to MongoDB and start server
+// -------------------
+// MongoDB connection
+// -------------------
+if (!process.env.MONGO_URI) {
+  console.error("❌ MONGO_URI is missing in .env");
+  process.exit(1);
+}
+
 mongoose
   .connect(process.env.MONGO_URI)
   .then(() => {
